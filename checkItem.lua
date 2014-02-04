@@ -8,7 +8,7 @@ local checkItem_mt = { __index = checkItem }
 function checkItem:new(num, list)
 	local c = {}
 	setmetatable( c, checkItem_mt )
-	c.list = list	
+	c.list = list
 	c.listField = listField
 	c.edited = false
 	c.num = num
@@ -44,7 +44,7 @@ function checkItem:initDelete()
     	label = "X",
     	onEvent = function(event)
     		if event.phase == "began" then
-    			table.remove(self.list,self.num)
+    			table.remove(self.list.listOfItems,self.num)
     			self.group:removeSelf()
     			self.list:render()
     		end
