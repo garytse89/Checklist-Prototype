@@ -9,7 +9,6 @@ function checklist:new()
 	local c = {}
 	setmetatable( c, checklist_mt )
 	c.group = display.newGroup( )
-	c.counter = 1
 	c.listOfItems = {}
 	return c
 end
@@ -29,27 +28,30 @@ function checklist:init()
 
 	self.group:insert(self.defaultField)
 
-	local newItem = checkItem:new(self.counter, self)
-	table.insert(self.listOfItems, newItem)
-	self.counter = self.counter+1
+	self:newListItem()
 end
 
 function checklist:newListItem()
-	local newItem = checkItem:new(self.counter)
+	local newItem = checkItem:new(#self.listOfItems)
 	table.insert(self.listOfItems, newItem)
-	self.counter = self.counter+1
 end
 
 function checklist:render()
-	local count = 0
 	for index,item in pairs(self.listOfItems) do
-		if item ~= nil then 
-			print( item.listField.text )
-			count = count + 1
+		print(item.num-1)
+		item.listField.y = 400+(item.num-1)*60 
+		item.box.y = 400+(item.num-1)*60 
+		if item.deleteBtn then
+			item.deleteBtn.y = 400+(item.num-1)*60 
 		end
-		item.listField.y = 400+count*60 
+		print(index,item.listField.text)
 	end
-	print(count)
+end
+
+function checklist:reorder()
+	for index,item in pairs(self.listOfItems) do
+		item.num = index
+	end
 end
 
 return checklist

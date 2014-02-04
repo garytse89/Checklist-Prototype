@@ -10,14 +10,14 @@ function checkItem:new(num)
 	setmetatable( c, checkItem_mt )
 	c.listField = listField
 	c.edited = false
-	c.num = num
+	c.num = num+1
 	c.group = display.newGroup() -- might not be needed
 	c:init(num)	
 	return c
 end
 
 function checkItem:init(num)
-	local listField = native.newTextField( display.contentWidth*0.3, 0, 200, 50 )
+	local listField = native.newTextField( display.contentWidth*0.3, 0, 200, 40 )
 	listField:addEventListener( "userInput", function(event) self:textListener(event) end )
 	listField.text = "List item"
 	listField.size = 20
@@ -25,40 +25,42 @@ function checkItem:init(num)
 	listField.font = native.newFont( "Roboto Slab" )
 	listField:setTextColor( 179,179,179 )
 	listField:setReferencePoint( display.CenterReferencePoint )
-	listField.y = 400+num*60
+	listField.y = 400+num*60 - 10
 
 	self.listField = listField
 
-	local newBox = box:new(num)
-	self.box = newBox
-	self.group:insert(self.box.box)
+	self.box = display.newText( "+", display.contentWidth*0.2, 0, native.newFont( "Roboto Slab" ), 20 )
+	self.box:setTextColor( 179 )
+	self.box:setReferencePoint( display.CenterReferencePoint )
+	self.box.y = 400+num*60
+
+	self.group:insert(self.box)
     self.group:insert(self.listField)
 end
 
 function checkItem:initDelete()
-	local deleteBtn = widget.newButton{	
-		left = display.contentWidth*0.8,
-    	top = 400+self.num*60,
-    	id = "delete",
-    	label = "X",
-    	onEvent = function(event)
+	self.deleteBtn = display.newText( "X", display.contentWidth*0.8, 400+(self.num-1)*60, native.newFont( "Roboto Slab" ), 20 )
+	self.deleteBtn:setTextColor( 179 )
+	self.deleteBtn:setReferencePoint( display.CenterReferencePoint )
+	self.deleteBtn.y = 400+(self.num-1)*60
+
+	self.deleteBtn:addEventListener( "touch", 
+		function(event)
     		if event.phase == "began" then
+    			print(self.listField.text, self.num)
     			table.remove(default.listOfItems,self.num)
     			self.group:removeSelf()
+    			default:reorder()
     			default:render()
+    			
     		end
-    	end,
-    	font = native.newFont( "Roboto Slab" ),
-    	fontSize = 20,
-    	labelColor = { default = {179} },
-    	labelAlign = "left",  	
-    }
+    	end)
 
-    self.group:insert(deleteBtn)
+    self.group:insert(self.deleteBtn)
 end
 
 function checkItem:turnPlusToBox()
-	self.box.box.text = "[]"
+	self.box.text = "[]"
 end
 
 function checkItem:textListener( event )
