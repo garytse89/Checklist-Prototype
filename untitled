@@ -1,0 +1,23 @@
+--box.lua
+
+local box = {}
+
+local box_mt = { __index = box }
+
+function box:new(num)
+	local c = {}
+	setmetatable( c, box_mt )
+
+	local listField = display.newText( display.contentWidth*0.5, 400+num*60, 400, 50 )
+	listField.text = "+"
+	listField.size = 20
+	listField.new = true
+	listField.font = native.newFont( "Roboto Slab" )
+	listField:setTextColor( 179,179,179 )
+	
+	c.listField = listField
+
+	return c
+end
+
+return box
