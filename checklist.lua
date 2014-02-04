@@ -35,7 +35,7 @@ function checklist:init()
 end
 
 function checklist:newListItem()
-	local newItem = checkItem:new(self.counter, self)
+	local newItem = checkItem:new(self.counter)
 	table.insert(self.listOfItems, newItem)
 	self.counter = self.counter+1
 end

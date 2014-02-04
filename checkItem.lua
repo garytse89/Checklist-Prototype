@@ -5,10 +5,9 @@ local checkItem = {}
 
 local checkItem_mt = { __index = checkItem }
 
-function checkItem:new(num, list)
+function checkItem:new(num)
 	local c = {}
 	setmetatable( c, checkItem_mt )
-	c.list = list
 	c.listField = listField
 	c.edited = false
 	c.num = num
@@ -44,9 +43,9 @@ function checkItem:initDelete()
     	label = "X",
     	onEvent = function(event)
     		if event.phase == "began" then
-    			table.remove(self.list.listOfItems,self.num)
+    			table.remove(default.listOfItems,self.num)
     			self.group:removeSelf()
-    			self.list:render()
+    			default:render()
     		end
     	end,
     	font = native.newFont( "Roboto Slab" ),
@@ -70,7 +69,7 @@ function checkItem:textListener( event )
 		self.listField:setTextColor(0)
 	elseif event.phase == "editing" and self.edited == false then
 		self.listField:setTextColor(0)
-		self.list:newListItem()
+		default:newListItem()
 		self.edited = true
 		self:initDelete()
 		self:turnPlusToBox()
