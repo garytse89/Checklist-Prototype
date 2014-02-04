@@ -20,7 +20,7 @@ function checklist:init()
 	-- Create our title Text Field
 	self.defaultField = native.newTextField( 0, display.contentHeight*0.2, 500, 100 )
 	self.defaultField:addEventListener( "userInput", self.textListener )
-	self.defaultField.text = "Title"
+	self.defaultField.text = "Checklist Prototype"
 	self.defaultField.font = native.newFont( "Roboto Slab" )
 	self.defaultField.size = 20
 	self.defaultField:setReferencePoint( display.CenterLeftReferencePoint )

@@ -1,6 +1,5 @@
 --checkItem.lua
 local widget = require( "widget" )
-local box = require("box")
 local checkItem = {}
 
 local checkItem_mt = { __index = checkItem }
@@ -18,12 +17,12 @@ function checkItem:new(num)
 end
 
 function checkItem:init(num)
-	local listField = native.newTextField( display.contentWidth*0.3, 0, 200, 40 )
+
+	local listField = native.newTextField( display.contentWidth*0.3, 0, display.contentWidth*350/720, 60 )
 	listField:addEventListener( "userInput", function(event) self:textListener(event) end )
 	listField.text = "List item"
-	listField.size = 40
-	listField.new = true
 	listField.font = native.newFont( "Roboto Slab" )
+	listField.size = 10
 	listField:setTextColor( 179,179,179 )
 	listField:setReferencePoint( display.CenterReferencePoint )
 	listField.y = 400+num*60
@@ -50,7 +49,7 @@ function checkItem:initDelete()
 	--self.deleteBtn:setTextColor( 179 )
 	self.deleteBtn = display.newImage( "images/x.png", 0, 0 )
 	self.deleteBtn:setReferencePoint( display.CenterReferencePoint )
-	self.deleteBtn.x = display.contentWidth*0.8
+	self.deleteBtn.x = display.contentWidth*0.9
 	self.deleteBtn.y = 400+(self.num-1)*60
 	self.deleteBtn:scale(2,2)
 
@@ -140,8 +139,10 @@ function checkItem:textListener( event )
 	elseif event.phase == "ended" then
 		if self.listField.text == "" then
 			self.listField.text = "List item"
+			self.listField:setTextColor(179,179,179)
+		elseif self.checked == true then
+			self.listField:setTextColor(179,179,179)
 		end
-		--self.listField:setTextColor(179,179,179)
 	end
 end
 
